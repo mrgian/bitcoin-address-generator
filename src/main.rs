@@ -1,3 +1,11 @@
+/*
+* Bitcoin Address Generator
+* 
+* Author: Gianmatteo Palmieri (www.gian.im)
+*
+* Made for learning purposes only
+*/
+
 use secp256k1::*;
 use crypto::digest::Digest;
 use crypto::sha2::Sha256;
@@ -7,23 +15,35 @@ use rand::Rng;
 use itertools::Itertools;
 
 fn main() {
+
+    //Start by generating a 256bit random private key
     let private_key = random_key();
     println!("Private Key: {:02x}", private_key.iter().format(""));
 
+    //Apply the Elliptic Curve Digital Signature Algorithm (ECDSA) to get the public key
     let public_key = private_to_public_key(&private_key);
     println!("Public Key: {:02x}", public_key.iter().format(""));
 
+    //First hash the public key with the SHA256 algorithm
     let sha256_hashed = hash_sha256(&public_key);
+
+    //Then hash it again with the RIPEMD160 algorithm
     let ripemd160_hashed = hash_ripemd160(&sha256_hashed);
+
+    //Add the bitcoin main network byte (0x00) to the hashed key
     let with_net_prefix = add_net_prefix(&ripemd160_hashed);
 
+    //Hash it again with SHA256 twice to get the checksum
     let first_sha256 = hash_sha256(&with_net_prefix);
     let second_sha256 = hash_sha256(&first_sha256);
 
+    //Add the first four bytes of the checksum to the hashed key
     let with_checksum = add_checksum(&with_net_prefix, &second_sha256);
     
+    //Encode the hashed key in ASCII using Base58 encoding
     let address = with_checksum.to_base58();
     
+    //You've got your bitcoin wallet address!
     println!("Public Address: {}", address);  
 }
 
