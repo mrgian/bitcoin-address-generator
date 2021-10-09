@@ -3,15 +3,15 @@ use crypto::digest::Digest;
 use crypto::sha2::Sha256;
 use crypto::ripemd160::Ripemd160;
 use base58::*;
-
 use rand::Rng;
+use itertools::Itertools;
 
 fn main() {
     let private_key = random_key();
-    println!("Private Key: {:x?}", private_key);
+    println!("Private Key: {:02x}", private_key.iter().format(""));
 
     let public_key = private_to_public_key(&private_key);
-    println!("Public Key: {:x?}", public_key);
+    println!("Public Key: {:02x}", public_key.iter().format(""));
 
     let sha256_hashed = hash_sha256(&public_key);
     let ripemd160_hashed = hash_ripemd160(&sha256_hashed);
