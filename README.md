@@ -24,12 +24,21 @@ Here are the steps used to generate the address:
 SHA256 twice│     │
             │     │
             │     │
-            │     │                                    ┌────────────────────┐
-            │     └───────────────────────────────────►│                    │
-            │               Add first four bytes       │     BITCOIN        │
-  ┌─────────▼──────────┐ of checksum to hashed key     │       WALLET       │
-  │                    ├──────────────────────────────►│        ADDRESS     │
-  │      Checksum      │                               │                    │
-  │                    │                               └────────────────────┘
-  └────────────────────┘
+            │     │                                     ┌─────────────┐
+            │     └────────────────────────────────────►│             │
+            │               Add first four bytes        │  Unencoded  │
+  ┌─────────▼──────────┐ of checksum to hashed key      │   Address   │
+  │                    ├───────────────────────────────►│             │
+  │      Checksum      │                                └──────┬──────┘
+  │                    │                                       │
+  └────────────────────┘                                       │
+                                                               │Base58 Encoding
+                                                               │
+                                                     ┌─────────▼──────────┐
+                                                     │                    │
+                                                     │     BITCOIN        │
+                                                     │       WALLET       │
+                                                     │        ADDRESS     │
+                                                     │                    │
+                                                     └────────────────────┘
 ```
