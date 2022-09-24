@@ -1,6 +1,6 @@
 # Bitcoin Address Generator
 A bitcoin address generator written in Rust.\
-Generates a Bitcoin wallet address from a random private 256bit random key.
+Generates a Bitcoin wallet address from a random private 256bit key.
 
 Made for learning purposes only.
 
